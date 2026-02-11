@@ -1,45 +1,29 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useRouter } from "expo-router";
-import { useDispatch, useSelector } from "react-redux";
-import { formatActivityDate } from "../utils/dateUtils";
-import {
-  selectCurrentActivity,
-  clearSelectedActivity,
-} from "../store/activitiesSlice";
+import { useActivityDetail } from "../hooks/useActivityDetail";
 import { ErrorView } from "../components/ErrorView";
 import { colors } from "../theme/colors";
-import { AppDispatch } from "../store";
 
 export const ActivityDetailScreen = () => {
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-
-  const activity = useSelector(selectCurrentActivity);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearSelectedActivity());
-    };
-  }, [dispatch]);
+  const { activity, formattedDate, goBack } = useActivityDetail();
 
   if (!activity) {
     return (
       <ErrorView
+        testID="activity-detail-error"
         title="No Activity Selected"
         message="Please go back to the list and select an activity."
-        onRetry={() => router.back()}
+        onRetry={goBack}
         buttonText="Back to List"
       />
     );
   }
 
-  const formattedDate = React.useMemo(() => {
-    return formatActivityDate(activity.date);
-  }, [activity.date]);
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      testID="activity-detail-screen"
+    >
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.type}>{activity.type}</Text>
