@@ -1,15 +1,7 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchActivities,
-  setSelectedActivity,
-  selectCurrentWeekActivities,
-  selectActivityLoading,
-  selectActivityError,
-} from "../store/activitiesSlice";
-import { AppDispatch } from "../store";
+import { useActivities } from "../hooks/useActivities";
 import { ActivityListItem } from "../components/ActivityListItem";
 import { EmptyState } from "../components/EmptyState";
 import { LoadingView } from "../components/LoadingView";
@@ -19,40 +11,37 @@ import { Activity } from "../types/activity";
 
 export const ActivityListScreen = () => {
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-
-  // Read state from Redux
-  const activities = useSelector(selectCurrentWeekActivities);
-  const loading = useSelector(selectActivityLoading);
-  const error = useSelector(selectActivityError);
-
-  const handlePressActivity = useCallback(
-    (activity: Activity) => {
-      dispatch(setSelectedActivity(activity));
-      router.push(`/${activity.id}`);
-    },
-    [dispatch, router],
-  );
-
-  // Fetch data on mount
-  useEffect(() => {
-    dispatch(fetchActivities());
-  }, [dispatch]);
+  const { activities, loading, error, selectActivity, retryFetch } =
+    useActivities();
 
   // Handle Loading
   if (loading) {
-    return <LoadingView message="Loading your activities..." />;
+    return (
+      <LoadingView
+        testID="activity-loading"
+        message="Loading your activities..."
+      />
+    );
   }
 
   // Handle Error
   if (error) {
     return (
       <ErrorView
+        testID="activity-error"
         message={`An error occurred: ${error}`}
-        onRetry={() => dispatch(fetchActivities())}
+        onRetry={retryFetch}
       />
     );
   }
+
+  const handlePressActivity = useCallback(
+    (activity: Activity) => {
+      selectActivity(activity);
+      router.push(`/${activity.id}`);
+    },
+    [selectActivity, router],
+  );
 
   // Handle List
   return (
@@ -71,7 +60,10 @@ export const ActivityListScreen = () => {
           />
         )}
         ListEmptyComponent={
-          <EmptyState message="No activities recorded for this week." />
+          <EmptyState
+            testID="activity-empty"
+            message="No activities recorded for this week."
+          />
         }
         contentContainerStyle={[
           styles.listContent,

@@ -8,7 +8,7 @@ import { activityService } from "../services/activityService";
 import { Activity, ActivityState } from "../types/activity";
 import { isWithinInterval, startOfWeek, endOfWeek, parseISO } from "date-fns";
 
-const initialState: ActivityState = {
+export const initialState: ActivityState = {
   activities: [],
   loading: false,
   error: null,
