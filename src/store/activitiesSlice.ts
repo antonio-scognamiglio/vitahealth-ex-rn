@@ -1,12 +1,18 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { activityService } from "../services/activityService";
 import { Activity, ActivityState } from "../types/activity";
+import { isWithinInterval, startOfWeek, endOfWeek, parseISO } from "date-fns";
 
 const initialState: ActivityState = {
   activities: [],
   loading: false,
   error: null,
-  selectedActivityId: null,
+  currentActivity: null,
 };
 
 export const fetchActivities = createAsyncThunk(
@@ -16,12 +22,16 @@ export const fetchActivities = createAsyncThunk(
     return response;
   },
 );
+
 const activitiesSlice = createSlice({
   name: "activities",
   initialState,
   reducers: {
-    selectActivity: (state, action: PayloadAction<string | null>) => {
-      state.selectedActivityId = action.payload;
+    setSelectedActivity: (state, action: PayloadAction<Activity>) => {
+      state.currentActivity = action.payload;
+    },
+    clearSelectedActivity: (state) => {
+      state.currentActivity = null;
     },
   },
   extraReducers: (builder) => {
@@ -36,12 +46,13 @@ const activitiesSlice = createSlice({
       })
       .addCase(fetchActivities.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Errore sconosciuto";
+        state.error = action.error.message || "Unknown error";
       });
   },
 });
 
-export const { selectActivity } = activitiesSlice.actions;
+export const { setSelectedActivity, clearSelectedActivity } =
+  activitiesSlice.actions;
 
 export default activitiesSlice.reducer;
 
@@ -51,7 +62,28 @@ export const selectActivityLoading = (state: { activities: ActivityState }) =>
   state.activities.loading;
 export const selectActivityError = (state: { activities: ActivityState }) =>
   state.activities.error;
-export const selectSelectedActivity = (state: { activities: ActivityState }) =>
-  state.activities.activities.find(
-    (a) => a.id === state.activities.selectedActivityId,
-  );
+
+export const selectCurrentWeekActivities = createSelector(
+  [selectAllActivities],
+  (allActivities: Activity[]) => {
+    const now = new Date();
+    const start = startOfWeek(now, { weekStartsOn: 1 }); // Monday
+    const end = endOfWeek(now, { weekStartsOn: 1 }); // Sunday
+
+    return allActivities
+      .filter((activity) => {
+        const activityDate = parseISO(activity.date);
+        return (
+          isWithinInterval(activityDate, { start, end }) &&
+          activityDate <= new Date()
+        );
+      })
+      .sort((a, b) => {
+        // Ordino dalla più recente alla meno recente
+        return parseISO(b.date).getTime() - parseISO(a.date).getTime();
+      });
+  },
+);
+
+export const selectCurrentActivity = (state: { activities: ActivityState }) =>
+  state.activities.currentActivity;
