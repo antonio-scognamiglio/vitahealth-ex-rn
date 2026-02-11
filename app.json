@@ -2,8 +2,8 @@
   "expo": {
     "name": "vitahealth-ex-rn",
     "slug": "vitahealth-ex-rn",
-    "scheme": "vitahealth",
     "version": "1.0.0",
+    "scheme": "vitahealth",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
