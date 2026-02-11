@@ -1,35 +1,34 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useRouter } from "expo-router";
-import { format } from "date-fns";
+import { formatActivityDate } from "../utils/dateUtils";
 import { Activity } from "../types/activity";
 import { colors } from "../theme/colors";
 
 interface ActivityListItemProps {
   activity: Activity;
+  onPress: () => void;
 }
 
 export const ActivityListItem: React.FC<ActivityListItemProps> = ({
   activity,
+  onPress,
 }) => {
-  const router = useRouter();
-
   return (
     <Pressable
-      onPress={() => router.push(`/${activity.id}`)}
+      onPress={onPress}
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
     >
       <View style={styles.rowWrapper}>
         <View style={styles.leftColumn}>
-          <Text style={styles.title}>{activity.title || activity.type}</Text>
-          <Text style={styles.date}>
-            {format(new Date(activity.date), "dd MMMM yyyy")}
+          <Text style={styles.title} numberOfLines={2}>
+            {activity.title || activity.type}
           </Text>
+          <Text style={styles.date}>{formatActivityDate(activity.date)}</Text>
         </View>
 
         <View style={styles.rightColumn}>
           <Text style={styles.duration}>{activity.duration} min</Text>
-          {activity.distance && (
+          {activity.distance !== undefined && activity.distance !== null && (
             <Text style={styles.distance}>{activity.distance} km</Text>
           )}
         </View>
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
   },
   leftColumn: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 16,
     justifyContent: "center",
   },
   rightColumn: {

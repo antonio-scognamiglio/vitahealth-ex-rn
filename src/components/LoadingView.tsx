@@ -7,7 +7,7 @@ interface LoadingViewProps {
 }
 
 export const LoadingView: React.FC<LoadingViewProps> = ({
-  message = "Caricamento...",
+  message = "Loading...",
 }) => {
   return (
     <View style={styles.container}>
