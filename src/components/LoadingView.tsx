@@ -4,13 +4,15 @@ import { colors } from "../theme/colors";
 
 interface LoadingViewProps {
   message?: string;
+  testID?: string;
 }
 
 export const LoadingView: React.FC<LoadingViewProps> = ({
   message = "Loading...",
+  testID,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID}>
       <ActivityIndicator size="large" color={colors.primary} />
       <Text style={styles.text}>{message}</Text>
     </View>

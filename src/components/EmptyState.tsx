@@ -4,13 +4,15 @@ import { colors } from "../theme/colors";
 
 interface EmptyStateProps {
   message?: string;
+  testID?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
   message = "No activities found.",
+  testID,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID}>
       <Text style={styles.text}>{message}</Text>
     </View>
   );
