@@ -6,12 +6,14 @@ interface ErrorViewProps {
   message?: string;
   onRetry?: () => void;
   title?: string;
+  buttonText?: string;
 }
 
 export const ErrorView: React.FC<ErrorViewProps> = ({
-  message = "Si è verificato un errore.",
-  title = "Ops!",
+  message = "An error occurred.",
+  title = "Oops!",
   onRetry,
+  buttonText = "Retry",
 }) => {
   return (
     <View style={styles.container}>
@@ -19,7 +21,7 @@ export const ErrorView: React.FC<ErrorViewProps> = ({
       <Text style={styles.text}>{message}</Text>
       {onRetry && (
         <View style={styles.buttonContainer}>
-          <Button title="Riprova" onPress={onRetry} color={colors.primary} />
+          <Button title={buttonText} onPress={onRetry} color={colors.primary} />
         </View>
       )}
     </View>

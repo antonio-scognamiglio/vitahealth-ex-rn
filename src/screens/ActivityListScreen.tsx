@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchActivities,
-  selectAllActivities,
+  setSelectedActivity,
+  selectCurrentWeekActivities,
   selectActivityLoading,
   selectActivityError,
 } from "../store/activitiesSlice";
@@ -13,44 +15,63 @@ import { EmptyState } from "../components/EmptyState";
 import { LoadingView } from "../components/LoadingView";
 import { ErrorView } from "../components/ErrorView";
 import { colors } from "../theme/colors";
+import { Activity } from "../types/activity";
 
 export const ActivityListScreen = () => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  // Leggiamo lo stato da Redux
-  const activities = useSelector(selectAllActivities);
+  // Read state from Redux
+  const activities = useSelector(selectCurrentWeekActivities);
   const loading = useSelector(selectActivityLoading);
   const error = useSelector(selectActivityError);
 
-  // Appena il componente viene montato, chiediamo i dati
+  const handlePressActivity = useCallback(
+    (activity: Activity) => {
+      dispatch(setSelectedActivity(activity));
+      router.push(`/${activity.id}`);
+    },
+    [dispatch, router],
+  );
+
+  // Fetch data on mount
   useEffect(() => {
     dispatch(fetchActivities());
   }, [dispatch]);
 
-  // Gestione Loading
+  // Handle Loading
   if (loading) {
-    return <LoadingView message="Stiamo recuperando le tue attività..." />;
+    return <LoadingView message="Loading your activities..." />;
   }
 
-  // Gestione Errore
+  // Handle Error
   if (error) {
     return (
       <ErrorView
-        message={`Si è verificato un errore: ${error}`}
+        message={`An error occurred: ${error}`}
         onRetry={() => dispatch(fetchActivities())}
       />
     );
   }
 
-  // Gestione Lista
+  // Handle List
   return (
     <View style={styles.container}>
       <FlatList
         data={activities}
+        initialNumToRender={10}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews={true}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ActivityListItem activity={item} />}
+        renderItem={({ item }) => (
+          <ActivityListItem
+            activity={item}
+            onPress={() => handlePressActivity(item)}
+          />
+        )}
         ListEmptyComponent={
-          <EmptyState message="Non hai ancora registrato nessuna attività questa settimana." />
+          <EmptyState message="No activities recorded for this week." />
         }
         contentContainerStyle={[
           styles.listContent,
@@ -64,10 +85,10 @@ export const ActivityListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background, // Padding rimosso da qui
+    backgroundColor: colors.background,
   },
   listContent: {
-    padding: 16, // Padding aggiunto qui per fix scrollbar
+    padding: 16,
     paddingBottom: 20,
   },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },

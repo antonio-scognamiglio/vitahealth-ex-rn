@@ -7,7 +7,7 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  message = "Nessuna attività trovata.",
+  message = "No activities found.",
 }) => {
   return (
     <View style={styles.container}>
