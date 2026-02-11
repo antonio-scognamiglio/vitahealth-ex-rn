@@ -22,8 +22,11 @@ export default function Layout() {
           },
         }}
       >
-        <Stack.Screen name="index" options={{ title: "Attività" }} />
-        <Stack.Screen name="[id]" options={{ title: "Dettaglio Attività" }} />
+        <Stack.Screen
+          name="index"
+          options={{ title: "This Week's Activities" }}
+        />
+        <Stack.Screen name="[id]" options={{ title: "Activity Details" }} />
       </Stack>
     </Provider>
   );

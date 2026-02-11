@@ -35,5 +35,5 @@ export interface ActivityState {
   activities: Activity[];
   loading: boolean;
   error: string | null;
-  selectedActivityId: string | null;
+  currentActivity: Activity | null;
 }
