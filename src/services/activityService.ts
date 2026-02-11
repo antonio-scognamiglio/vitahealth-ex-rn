@@ -1,6 +1,6 @@
-import { subDays } from "date-fns";
 import activitiesData from "../data/activities.json";
 import { Activity, ActivityDTO } from "../types/activity";
+import { mapDtoToActivity } from "../mappers/activityMapper";
 
 const SIMULATED_DELAY_MS = 1500;
 
@@ -11,11 +11,7 @@ export const activityService = {
         // Transform DTO (daysAgo) -> Model (ISO date)
         const activities: Activity[] = (activitiesData as ActivityDTO[]).map(
           (dto) => {
-            const { daysAgo, ...rest } = dto;
-            return {
-              ...rest,
-              date: subDays(new Date(), daysAgo).toISOString(),
-            };
+            return mapDtoToActivity(dto);
           },
         );
 
