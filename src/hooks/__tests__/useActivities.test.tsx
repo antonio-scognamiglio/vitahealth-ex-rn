@@ -48,6 +48,7 @@ describe('useActivities hook', () => {
     // Wait for update
     await waitFor(() => expect(result.current.loading).toBe(false));
 
+    // Verify activities are loaded and filtered
     expect(result.current.activities).toHaveLength(1);
     expect(result.current.activities[0]).toMatchObject({
       type: 'Run',
@@ -91,6 +92,7 @@ describe('useActivities hook', () => {
       result.current.retryFetch();
     });
 
+    // Verify it transitioned back to success
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.error).toBeNull();
   });
