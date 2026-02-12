@@ -1,4 +1,4 @@
-import { ActivityDetailScreen } from "../src/screens/ActivityDetailScreen";
+import { ActivityDetailScreen } from '../src/screens/ActivityDetailScreen';
 
 export default function ActivityDetailRoute() {
   return <ActivityDetailScreen />;

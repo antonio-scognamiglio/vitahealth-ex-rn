@@ -1,15 +1,19 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchActivities,
   setSelectedActivity,
   selectCurrentWeekActivities,
   selectActivityLoading,
   selectActivityError,
-} from "../store/activitiesSlice";
-import { AppDispatch } from "../store";
-import { Activity } from "../types/activity";
+} from '../store/activitiesSlice';
+import { AppDispatch } from '../store';
+import { Activity } from '../types/activity';
 
+/**
+ * Custom hook to manage fetching and selecting activities.
+ * Decouples logic from UI components.
+ */
 export const useActivities = () => {
   const dispatch = useDispatch<AppDispatch>();
 

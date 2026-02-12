@@ -1,20 +1,20 @@
-import React from "react";
-import { screen, fireEvent } from "@testing-library/react-native";
-import { renderWithProviders } from "../../test-utils";
-import { ActivityListScreen } from "../ActivityListScreen";
-import * as useActivitiesHook from "../../hooks/useActivities";
+import React from 'react';
+import { screen, fireEvent } from '@testing-library/react-native';
+import { renderWithProviders } from '../../test-utils';
+import { ActivityListScreen } from '../ActivityListScreen';
+import * as useActivitiesHook from '../../hooks/useActivities';
+
+import { useRouter } from 'expo-router';
 
 // Mock expo-router
-jest.mock("expo-router", () => ({
+jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
 }));
 
-import { useRouter } from "expo-router";
-
 // Mock useActivities hook
-jest.mock("../../hooks/useActivities");
+jest.mock('../../hooks/useActivities');
 
-describe("ActivityListScreen", () => {
+describe('ActivityListScreen', () => {
   const mockPush = jest.fn();
   const mockSelectActivity = jest.fn();
   const mockRetryFetch = jest.fn();
@@ -26,7 +26,7 @@ describe("ActivityListScreen", () => {
     });
   });
 
-  it("should display loading state when hook returns loading", () => {
+  it('should display loading state when hook returns loading', () => {
     (useActivitiesHook.useActivities as jest.Mock).mockReturnValue({
       activities: [],
       loading: true,
@@ -37,41 +37,41 @@ describe("ActivityListScreen", () => {
 
     renderWithProviders(<ActivityListScreen />);
 
-    expect(screen.getByTestId("activity-loading")).toBeTruthy();
+    expect(screen.getByTestId('activity-loading')).toBeTruthy();
   });
 
-  it("should display error state when hook returns error", () => {
+  it('should display error state when hook returns error', () => {
     (useActivitiesHook.useActivities as jest.Mock).mockReturnValue({
       activities: [],
       loading: false,
-      error: "Failed to fetch",
+      error: 'Failed to fetch',
       selectActivity: mockSelectActivity,
       retryFetch: mockRetryFetch,
     });
 
     renderWithProviders(<ActivityListScreen />);
 
-    expect(screen.getByTestId("activity-error")).toBeTruthy();
+    expect(screen.getByTestId('activity-error')).toBeTruthy();
   });
 
-  it("should call retryFetch when retry button is pressed", () => {
+  it('should call retryFetch when retry button is pressed', () => {
     (useActivitiesHook.useActivities as jest.Mock).mockReturnValue({
       activities: [],
       loading: false,
-      error: "Failed to fetch",
+      error: 'Failed to fetch',
       selectActivity: mockSelectActivity,
       retryFetch: mockRetryFetch,
     });
 
     renderWithProviders(<ActivityListScreen />);
 
-    const retryButton = screen.getByText("Retry");
+    const retryButton = screen.getByText('Retry');
     fireEvent.press(retryButton);
 
     expect(mockRetryFetch).toHaveBeenCalled();
   });
 
-  it("should display empty state when hook returns no activities", () => {
+  it('should display empty state when hook returns no activities', () => {
     (useActivitiesHook.useActivities as jest.Mock).mockReturnValue({
       activities: [],
       loading: false,
@@ -82,14 +82,14 @@ describe("ActivityListScreen", () => {
 
     renderWithProviders(<ActivityListScreen />);
 
-    expect(screen.getByTestId("activity-empty")).toBeTruthy();
+    expect(screen.getByTestId('activity-empty')).toBeTruthy();
   });
 
-  it("should display activity items and handle press", () => {
+  it('should display activity items and handle press', () => {
     const mockActivity = {
-      id: "1",
-      type: "Run",
-      date: "2023-10-10T12:00:00Z",
+      id: '1',
+      type: 'Run',
+      date: '2023-10-10T12:00:00Z',
       duration: 30,
     };
 
@@ -103,12 +103,12 @@ describe("ActivityListScreen", () => {
 
     renderWithProviders(<ActivityListScreen />);
 
-    expect(screen.getByText("Run")).toBeTruthy();
+    expect(screen.getByText('Run')).toBeTruthy();
 
-    const item = screen.getByText("Run");
+    const item = screen.getByText('Run');
     fireEvent.press(item);
 
     expect(mockSelectActivity).toHaveBeenCalledWith(mockActivity);
-    expect(mockPush).toHaveBeenCalledWith("/1");
+    expect(mockPush).toHaveBeenCalledWith('/1');
   });
 });

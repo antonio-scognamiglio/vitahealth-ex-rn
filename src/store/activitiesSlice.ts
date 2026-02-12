@@ -3,10 +3,10 @@ import {
   createSlice,
   PayloadAction,
   createSelector,
-} from "@reduxjs/toolkit";
-import { activityService } from "../services/activityService";
-import { Activity, ActivityState } from "../types/activity";
-import { isWithinInterval, startOfWeek, endOfWeek, parseISO } from "date-fns";
+} from '@reduxjs/toolkit';
+import { activityService } from '../services/activityService';
+import { Activity, ActivityState } from '../types/activity';
+import { isWithinInterval, startOfWeek, endOfWeek, parseISO } from 'date-fns';
 
 export const initialState: ActivityState = {
   activities: [],
@@ -16,7 +16,7 @@ export const initialState: ActivityState = {
 };
 
 export const fetchActivities = createAsyncThunk(
-  "activities/fetchActivities",
+  'activities/fetchActivities',
   async () => {
     const response: Activity[] = await activityService.fetchActivities();
     return response;
@@ -24,7 +24,7 @@ export const fetchActivities = createAsyncThunk(
 );
 
 const activitiesSlice = createSlice({
-  name: "activities",
+  name: 'activities',
   initialState,
   reducers: {
     setSelectedActivity: (state, action: PayloadAction<Activity>) => {
@@ -46,7 +46,7 @@ const activitiesSlice = createSlice({
       })
       .addCase(fetchActivities.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Unknown error";
+        state.error = action.error.message || 'Unknown error';
       });
   },
 });
@@ -63,12 +63,16 @@ export const selectActivityLoading = (state: { activities: ActivityState }) =>
 export const selectActivityError = (state: { activities: ActivityState }) =>
   state.activities.error;
 
+/**
+ * Selects only activities for the current week (Mon-Sun).
+ * Filters based on user's local device time.
+ */
 export const selectCurrentWeekActivities = createSelector(
   [selectAllActivities],
   (allActivities: Activity[]) => {
     const now = new Date();
-    const start = startOfWeek(now, { weekStartsOn: 1 }); // Monday
-    const end = endOfWeek(now, { weekStartsOn: 1 }); // Sunday
+    const start = startOfWeek(now, { weekStartsOn: 1 });
+    const end = endOfWeek(now, { weekStartsOn: 1 });
 
     return allActivities
       .filter((activity) => {
@@ -79,7 +83,6 @@ export const selectCurrentWeekActivities = createSelector(
         );
       })
       .sort((a, b) => {
-        // Ordino dalla più recente alla meno recente
         return parseISO(b.date).getTime() - parseISO(a.date).getTime();
       });
   },

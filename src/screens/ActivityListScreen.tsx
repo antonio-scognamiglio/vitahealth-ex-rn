@@ -1,20 +1,27 @@
-import React, { useCallback } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import { useActivities } from "../hooks/useActivities";
-import { ActivityListItem } from "../components/ActivityListItem";
-import { EmptyState } from "../components/EmptyState";
-import { LoadingView } from "../components/LoadingView";
-import { ErrorView } from "../components/ErrorView";
-import { colors } from "../theme/colors";
-import { Activity } from "../types/activity";
+import React, { useCallback } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useActivities } from '../hooks/useActivities';
+import { ActivityListItem } from '../components/ActivityListItem';
+import { EmptyState } from '../components/EmptyState';
+import { LoadingView } from '../components/LoadingView';
+import { ErrorView } from '../components/ErrorView';
+import { colors } from '../theme/colors';
+import { Activity } from '../types/activity';
 
 export const ActivityListScreen = () => {
   const router = useRouter();
   const { activities, loading, error, selectActivity, retryFetch } =
     useActivities();
 
-  // Handle Loading
+  const handlePressActivity = useCallback(
+    (activity: Activity) => {
+      selectActivity(activity);
+      router.push(`/${activity.id}`);
+    },
+    [selectActivity, router],
+  );
+
   if (loading) {
     return (
       <LoadingView
@@ -24,7 +31,6 @@ export const ActivityListScreen = () => {
     );
   }
 
-  // Handle Error
   if (error) {
     return (
       <ErrorView
@@ -35,15 +41,6 @@ export const ActivityListScreen = () => {
     );
   }
 
-  const handlePressActivity = useCallback(
-    (activity: Activity) => {
-      selectActivity(activity);
-      router.push(`/${activity.id}`);
-    },
-    [selectActivity, router],
-  );
-
-  // Handle List
   return (
     <View style={styles.container}>
       <FlatList
@@ -83,5 +80,5 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 20,
   },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
