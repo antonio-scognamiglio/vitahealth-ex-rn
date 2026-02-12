@@ -1,8 +1,8 @@
-import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { formatActivityDate } from "../utils/dateUtils";
-import { Activity } from "../types/activity";
-import { colors } from "../theme/colors";
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { formatActivityDate } from '../utils/dateUtils';
+import { Activity } from '../types/activity';
+import { colors } from '../theme/colors';
 
 interface ActivityListItemProps {
   activity: Activity;
@@ -48,48 +48,48 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "transparent",
-    overflow: "hidden",
+    borderColor: 'transparent',
+    overflow: 'hidden',
   },
   rowWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
   },
   pressed: {
-    backgroundColor: "#E0E7FF",
+    backgroundColor: '#E0E7FF',
     opacity: 0.75,
   },
   leftColumn: {
     flex: 1,
     marginRight: 16,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   rightColumn: {
-    alignItems: "flex-end",
-    justifyContent: "center",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.text.primary,
     marginBottom: 4,
   },
   date: {
     fontSize: 14,
     color: colors.text.secondary,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   duration: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.primary,
     marginBottom: 4,
   },
   distance: {
     fontSize: 13,
     color: colors.text.secondary,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });

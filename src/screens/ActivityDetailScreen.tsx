@@ -1,8 +1,8 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useActivityDetail } from "../hooks/useActivityDetail";
-import { ErrorView } from "../components/ErrorView";
-import { colors } from "../theme/colors";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useActivityDetail } from '../hooks/useActivityDetail';
+import { ErrorView } from '../components/ErrorView';
+import { colors } from '../theme/colors';
 
 export const ActivityDetailScreen = () => {
   const { activity, formattedDate, goBack } = useActivityDetail();
@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
   },
   type: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.primary,
     marginBottom: 4,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     letterSpacing: 1,
   },
   date: {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.text.primary,
     marginBottom: 12,
   },
@@ -103,25 +103,25 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   statsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     borderTopWidth: 1,
     borderTopColor: colors.border,
     paddingTop: 24,
     gap: 24,
   },
   statItem: {
-    minWidth: "30%",
+    minWidth: '30%',
   },
   statLabel: {
     fontSize: 13,
     color: colors.text.light,
     marginBottom: 4,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   statValue: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.text.primary,
   },
 });

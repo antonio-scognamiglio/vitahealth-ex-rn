@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { colors } from "../theme/colors";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface EmptyStateProps {
   message?: string;
@@ -8,7 +8,7 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  message = "No activities found.",
+  message = 'No activities found.',
   testID,
 }) => {
   return (
@@ -21,13 +21,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 40,
   },
   text: {
     fontSize: 16,
     color: colors.text.secondary,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

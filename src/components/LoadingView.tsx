@@ -1,6 +1,6 @@
-import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { colors } from "../theme/colors";
+import React from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface LoadingViewProps {
   message?: string;
@@ -8,7 +8,7 @@ interface LoadingViewProps {
 }
 
 export const LoadingView: React.FC<LoadingViewProps> = ({
-  message = "Loading...",
+  message = 'Loading...',
   testID,
 }) => {
   return (
@@ -22,8 +22,8 @@ export const LoadingView: React.FC<LoadingViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
     backgroundColor: colors.background,
   },

@@ -1,13 +1,13 @@
-import { mapDtoToActivity } from "../activityMapper";
-import { ActivityDTO } from "../../types/activity";
-import { isSameDay, parseISO, subDays, addDays } from "date-fns";
+import { mapDtoToActivity } from '../activityMapper';
+import { ActivityDTO } from '../../types/activity';
+import { isSameDay, parseISO, subDays, addDays } from 'date-fns';
 
-describe("activityMapper", () => {
-  describe("mapDtoToActivity", () => {
+describe('activityMapper', () => {
+  describe('mapDtoToActivity', () => {
     it("should correctly map daysAgo: 0 to today's date", () => {
       const dto: ActivityDTO = {
-        id: "1",
-        type: "Run",
+        id: '1',
+        type: 'Run',
         daysAgo: 0,
         duration: 30,
       };
@@ -15,10 +15,10 @@ describe("activityMapper", () => {
       expect(isSameDay(parseISO(activity.date), new Date())).toBe(true);
     });
 
-    it("should correctly map daysAgo: 10 to 10 days ago (PAST)", () => {
+    it('should correctly map daysAgo: 10 to 10 days ago (PAST)', () => {
       const dto: ActivityDTO = {
-        id: "2",
-        type: "Swim",
+        id: '2',
+        type: 'Swim',
         daysAgo: 10,
         duration: 45,
       };
@@ -27,10 +27,10 @@ describe("activityMapper", () => {
       expect(isSameDay(parseISO(activity.date), expectedDate)).toBe(true);
     });
 
-    it("should correctly map daysAgo: -5 to 5 days in future (FUTURE)", () => {
+    it('should correctly map daysAgo: -5 to 5 days in future (FUTURE)', () => {
       const dto: ActivityDTO = {
-        id: "3",
-        type: "Walk",
+        id: '3',
+        type: 'Walk',
         daysAgo: -5,
         duration: 20,
       };

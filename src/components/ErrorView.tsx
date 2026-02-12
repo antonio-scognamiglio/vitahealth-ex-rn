@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { colors } from "../theme/colors";
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface ErrorViewProps {
   message?: string;
@@ -11,10 +11,10 @@ interface ErrorViewProps {
 }
 
 export const ErrorView: React.FC<ErrorViewProps> = ({
-  message = "An error occurred.",
-  title = "Oops!",
+  message = 'An error occurred.',
+  title = 'Oops!',
   onRetry,
-  buttonText = "Retry",
+  buttonText = 'Retry',
   testID,
 }) => {
   return (
@@ -33,21 +33,21 @@ export const ErrorView: React.FC<ErrorViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
     backgroundColor: colors.background,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.text.primary,
     marginBottom: 8,
   },
   text: {
     fontSize: 16,
     color: colors.error,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 20,
   },
   buttonContainer: {
