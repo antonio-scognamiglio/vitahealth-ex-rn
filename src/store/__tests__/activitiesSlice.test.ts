@@ -3,33 +3,46 @@ import activitiesReducer, {
   clearSelectedActivity,
   selectCurrentWeekActivities,
 } from '../activitiesSlice';
-import { ActivityDTO, ActivityState } from '../../types/activity';
+import { Activity, ActivityDTO, ActivityState } from '../../types/activity';
 import { mapDtoToActivity } from '../../mappers/activityMapper';
+
+const currentDto: ActivityDTO = {
+  id: 'current',
+  type: 'Run',
+  daysAgo: 0,
+  duration: 30,
+};
+const pastDto: ActivityDTO = {
+  id: 'past',
+  type: 'Walk',
+  daysAgo: 14,
+  duration: 60,
+};
+const futureDto: ActivityDTO = {
+  id: 'future',
+  type: 'Gym',
+  daysAgo: -5,
+  duration: 45,
+};
 
 describe('Activity Tests', () => {
   describe('activitiesSlice', () => {
-    const currentDto: ActivityDTO = {
-      id: 'current',
-      type: 'Run',
-      daysAgo: 0,
-      duration: 30,
-    };
-    const pastDto: ActivityDTO = {
-      id: 'past',
-      type: 'Walk',
-      daysAgo: 14,
-      duration: 60,
-    };
-    const futureDto: ActivityDTO = {
-      id: 'future',
-      type: 'Gym',
-      daysAgo: -5,
-      duration: 45,
-    };
+    let currentActivity: Activity;
+    let pastActivity: Activity;
+    let futureActivity: Activity;
 
-    const currentActivity = mapDtoToActivity(currentDto);
-    const pastActivity = mapDtoToActivity(pastDto);
-    const futureActivity = mapDtoToActivity(futureDto);
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2023-10-18T12:00:00Z')); // Mercoledì
+
+      currentActivity = mapDtoToActivity(currentDto);
+      pastActivity = mapDtoToActivity(pastDto);
+      futureActivity = mapDtoToActivity(futureDto);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
 
     it('should handle initial state', () => {
       const expected: ActivityState = {
